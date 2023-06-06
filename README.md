@@ -1,2 +1,2 @@
 # MetaGWAS_Vaspin
-MetaGWAS summary statistics and analysis of Vaspin
+Details of the Mendelian Randomization Analysis.
