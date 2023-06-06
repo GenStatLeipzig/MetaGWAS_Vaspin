@@ -49,4 +49,8 @@ po/*~
 rsconnect/
 
 # Folder with summary statistics
-data/
+sumStats/
+
+# R Studio project 
+*.Rproj
+
