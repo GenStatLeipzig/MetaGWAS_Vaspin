@@ -35,5 +35,5 @@ not included) **Calculation of covariance matrix for adjusted MR**: genetic data
 3) **Table MR results for adjusted and unadjusted MR** (--> see script 03_MR_unadjusted_threeSNPs.R)
 
 # Links to disease reference data used 
-* HOMA_IR: http://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST005001-GCST006000/GCST005179/harmonised/ (PMID: 20081858)
+* HOMA-IR: http://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST005001-GCST006000/GCST005179/harmonised/ (PMID: 20081858)
 * Triglycerides, Cholesterol and LDL-Cholesterol: https://csg.sph.umich.edu/willer/public/glgc-lipids2021/results/ancestry_specific/ (PMID: 34887591)
