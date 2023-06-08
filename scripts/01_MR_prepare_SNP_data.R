@@ -1,15 +1,20 @@
-#In this script I prepare the data for the MendelRando.
+# In this script the data for the Mendelian Randomization is prepared.
+# At first the summary statistics of the MetaGWAS of VASPIN are filtered for the five SNPs that will be the instruments of the MR analysis.
+# Two SNPs needed to be added because they were missing in the HOMA reference data set.
+# As a second step the SNP data for the above mentioned seven SNPs is added from four different disease reference data sets 
+# (HOMA, Triglycerides, total Cholesterol and LDL-Cholesterol).
+
 
 #####
-# 0. presetting
+# 0. Setting
 #####
 rm(list=ls())
-source("../SourceFile_aman.R")
+source("../SourceFile.R")
 setwd(basicpath_scripts)
 
 
 #####
-# 1. define list of my SNPs and get their data from our MetaGWAS
+# 1. define list of my SNPs and get their data from VASPIN MetaGWAS
 #####
 # This list contains the five top-SNPs from chromosome 14 locus of the MetaGWAS.
 # Two of this SNP are not available in the HOMA data, so two proxy SNPs of those were added to this list for the HOMA analysis.
@@ -31,7 +36,7 @@ snpData
 
 
 #####
-# 2. add data of other phenotypes
+# 2. add data of desease reference data sets
 #####
 # Homa
 # Discovery sample description: 37,037 European ancestry individuals
@@ -57,7 +62,7 @@ dat.homa[, rsID.homa2 := rsID.homa]
 snpData = merge(x = snpData, y = dat.homa, by.x = "rsID", by.y = "rsID.homa", all = T)
 snpData[, logP.homa := -log10(P.homa)]
 
-# Triglyceride
+# Triglycerides
 dat.tri = fread("../reference_data/logTG_INV_EUR_HRC_1KGP3_others_ALL.meta.singlevar.results.gz")
 dat.tri = dat.tri[is.element(rsID, mySNPs.rs), ]
 cols2keep = c("rsID.tri", "EAF.tri", "EA.tri", "OA.tri", "beta.tri", "SE.tri", "logP.tri")
@@ -119,7 +124,7 @@ table(snpData[, effect_allele] == snpData[, EA.ldl])
 table(snpData[, other_allele] == snpData[, OA.ldl])
 snpData[which(snpData[, effect_allele] != snpData[, EA.ldl]), ]
 
-#switch rs4905216 for Triglyceride, LDL and total Cholesterol
+#switch alleles of rs4905216 for Triglyceride, LDL and total Cholesterol
 snpData[rsID == "rs4905216", EAF.tri := 1 - EAF.tri]
 snpData[rsID == "rs4905216", EA.tri := "C"]
 snpData[rsID == "rs4905216", OA.tri := "G"]
@@ -135,8 +140,6 @@ snpData[rsID == "rs4905216", EA.ldl := "C"]
 snpData[rsID == "rs4905216", OA.ldl := "G"]
 snpData[rsID == "rs4905216", beta.ldl := (-1) * beta.ldl]
 
-snpData
-
 table(snpData[, rsID] == snpData[, rsID.homa2])
 table(snpData[, rsID] == snpData[, rsID.tri2])
 table(snpData[, rsID] == snpData[, rsID.chol2])
@@ -146,6 +149,6 @@ snpData[, c("rsID.homa2", "rsID.tri2", "rsID.chol2", "rsID.ldl2") := NULL]
 snpData
 
 #####
-# 4. save data object
+# 4. save SNP data object
 #####
 save(snpData, file = "../data_MR/MR_snpData.RData")
