@@ -1,5 +1,5 @@
 #'---
-#'title: "Adjusted Mendel Rando of VASPIN and three disease data sets"
+#'title: "Adjusted Mendelian Randomization of VASPIN and four disease data sets"
 #'author: "Katrin Horn"
 #'date: "`r Sys.Date()`"
 #' output:
@@ -10,12 +10,12 @@
 #'     code_folding: show
 #'---
 
-#' # presettings
+#' # Settings
 rm(list=ls())
-source("../SourceFile_aman.R")
+source("../SourceFile.R")
 setwd(basicpath_scripts)
 
-#' # Load data and prepare Mendel Rando
+#' # Load data and prepare Mendelian Randomization
 # load prepared SNP data
 load("../data_MR/MR_snpData.RData")
 snpData
@@ -24,7 +24,7 @@ snpData
 load("../data_MR/MR_covMatrix.RData")
 covMatrix
 
-# define SNPs to use for different phenotypes
+# define SNPs to use for different diseases
 homa.SNPs = c("rs7141073:94993744:C:T", "rs1956709:94967969:A:G", "rs4905216:95000960:G:C", "rs12436152:94967748:C:T", "rs17094914:94975583:C:G")
 other.SNPs = c("rs7141073:94993744:C:T", "rs1956709:94967969:A:G", "rs4905216:95000960:G:C", "rs61978267:94980896:C:T", "rs73338689:94973878:G:C")
 
@@ -49,7 +49,7 @@ MR.homa.stat
 result.homa = MR.homa.stat@Values[4,]
 mr_plot(MR.homa, interactive = T, labels = T)
 
-#' ## Vaspin and Triglycerides 
+#' ## Vaspin and Triglycerides adjusted
 m.SNP = match(other.SNPs, snpData[, SNP])
 m.cor = match(other.SNPs, colnames(covMatrix))
 
@@ -62,7 +62,7 @@ MR.tri.stat
 result.tri = MR.tri.stat@Values[4,]
 mr_plot(MR.tri, interactive = T, labels = T)
 
-#' ## Vaspin and Cholesterol adjusted
+#' ## Vaspin and total Cholesterol adjusted
 m.SNP = match(other.SNPs, snpData[, SNP])
 m.cor = match(other.SNPs, colnames(covMatrix))
 
@@ -75,7 +75,7 @@ MR.chol.stat
 result.chol = MR.chol.stat@Values[4,]
 mr_plot(MR.chol, interactive = T, labels = T)
 
-#' ## Vaspin and LDL adjusted
+#' ## Vaspin and LDL-Cholesterol adjusted
 m.SNP = match(other.SNPs, snpData[, SNP])
 m.cor = match(other.SNPs, colnames(covMatrix))
 
@@ -136,21 +136,21 @@ plotD.l = mr_plot(MR.ldl, interactive = F, labels = F)
 plotD.r = mr_plot(mr_allmethods(MR.ldl, method = "main", iterations = 50), orientate = TRUE)
 
 # make the plots look nicer and with matching text sizes
-huebschScatter = function(plot1, x, y, title){
+niceScatter = function(plot1, x, y, title){
   plot1 + theme_light(base_size = 10) + xlab(x) + ylab(y)+ ggtitle(title)
 }
-plotA.l2 = huebschScatter(plotA.l, "Effect sizes vaspin","Effect sizes HOMA", "A")
-plotB.l2 = huebschScatter(plotB.l, "Effect sizes vaspin","Effect sizes TG", "B")
-plotC.l2 = huebschScatter(plotC.l, "Effect sizes vaspin","Effect sizes Chol", "C")
-plotD.l2 = huebschScatter(plotD.l, "Effect sizes vaspin","Effect sizes LDL-Chol", "D")
+plotA.l2 = niceScatter(plotA.l, "Effect sizes vaspin","Effect sizes HOMA", "A")
+plotB.l2 = niceScatter(plotB.l, "Effect sizes vaspin","Effect sizes TG", "B")
+plotC.l2 = niceScatter(plotC.l, "Effect sizes vaspin","Effect sizes Chol", "C")
+plotD.l2 = niceScatter(plotD.l, "Effect sizes vaspin","Effect sizes LDL-Chol", "D")
 
-huebschOther = function(plot2, x, y){
+niceOther = function(plot2, x, y){
   plot2 + theme_light(base_size = 10) + xlab(x) + ylab(y)
 }
-plotA.r2 = huebschOther(plotA.r, "Effect sizes vaspin","Effect sizes HOMA")
-plotB.r2 = huebschOther(plotB.r, "Effect sizes vaspin","Effect sizes TG")
-plotC.r2 = huebschOther(plotC.r, "Effect sizes vaspin","Effect sizes Chol")
-plotD.r2 = huebschOther(plotD.r, "Effect sizes vaspin","Effect sizes LDL-Chol")
+plotA.r2 = niceOther(plotA.r, "Effect sizes vaspin","Effect sizes HOMA")
+plotB.r2 = niceOther(plotB.r, "Effect sizes vaspin","Effect sizes TG")
+plotC.r2 = niceOther(plotC.r, "Effect sizes vaspin","Effect sizes Chol")
+plotD.r2 = niceOther(plotD.r, "Effect sizes vaspin","Effect sizes LDL-Chol")
 
 tiff(filename = "../figures/SF_MR_results_several_methods.tiff", width = 1600, height = 2000, res=250, compression = 'lzw')
 plot_grid(plotA.l2, plotA.r2,
