@@ -36,7 +36,7 @@ snpData
 
 
 #####
-# 2. add data of desease reference data sets
+# 2. add data of disease reference data sets
 #####
 # Homa
 # Discovery sample description: 37,037 European ancestry individuals
