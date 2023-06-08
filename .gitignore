@@ -54,8 +54,5 @@ sumStats/
 # R Studio project 
 *.Rproj
 
-# Server Source file
-SourceFile_aman.R
-
 # Folder with downloaded reference data
 reference_data/
